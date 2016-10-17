@@ -1,6 +1,6 @@
 {
   "name": "elr-accordion-nav",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "a basic content accordion nav menu",
   "main": "dist/elr-accordion-nav.js",
   "repository": {
