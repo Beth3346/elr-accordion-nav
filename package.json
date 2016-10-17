@@ -1,0 +1,27 @@
+{
+  "name": "elr-accordion-nav",
+  "version": "1.0.0",
+  "description": "a basic content accordion nav menu",
+  "main": "dist/elr-accordion-nav.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/elr-utilities/elr-accordion-nav.git"
+  },
+  "scripts": {
+    "build": "build"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.0.0",
+    "jquery": "^3.1.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.0.0",
+    "babel-preset-es2015": "^6.14.0",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-jshint": "^2.0.1",
+    "gulp-sourcemaps": "^2.1.1",
+    "jshint": "^2.9.3"
+  }
+}
