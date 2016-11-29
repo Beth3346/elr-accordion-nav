@@ -5,128 +5,97 @@ Object.defineProperty(exports, "__esModule", {
 });
 var $ = require('jquery');
 
-var elrAccordionNav = function elrAccordionNav(params) {
-    var self = {};
-    var spec = params || {};
-    var speed = spec.speed || 300;
-    var containerClass = spec.containerClass || 'elr-accordion-nav';
-    var expandIconClass = spec.expandIconClass || 'fa-plus';
-    var collapseIconClass = spec.collapseIconClass || 'fa-minus';
-    var iconClass = spec.iconClass || 'elr-accordion-icon';
+var elrAccordionNav = function elrAccordionNav() {
+    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    var _ref$containerClass = _ref.containerClass;
+    var containerClass = _ref$containerClass === undefined ? 'elr-accordion-nav' : _ref$containerClass;
+    var _ref$labelClass = _ref.labelClass;
+    var labelClass = _ref$labelClass === undefined ? 'elr-accordion-nav-label' : _ref$labelClass;
+
     var contentHolderClass = contentHolderClass || 'elr-accordion-nav-inner';
     var $container = $('.' + containerClass);
+    var self = {
+        toggle: function toggle($openContent, $openLabel) {
+            var $that = $(this);
+            var $nextContent = $that.next();
 
-    var showDefaultContent = function showDefaultContent($expandedContent, $content) {
-        $content.hide();
-        $expandedContent.show();
-    };
+            if (!$nextContent.hasClass('active')) {
+                $that.addClass('active');
+                $nextContent.addClass('active');
+            }
 
-    var toggle = function toggle(speed, $openContent) {
-        var $that = $(this);
-        var $nextContent = $that.next();
-
-        $openContent.slideUp(speed);
-
-        if ($nextContent.is(':hidden')) {
-            $nextContent.slideDown(speed);
-        } else {
-            $nextContent.slideUp(speed);
+            $openLabel.removeClass('active');
+            $openContent.removeClass('active');
         }
     };
 
-    var replaceIcons = function replaceIcons($openContent, iconClass, expandIconClass, collapseIconClass) {
-        var $that = $(this);
-        var $icon = $that.find('.' + iconClass);
-        var $openContentIcons = $openContent.prev().find('.' + iconClass);
+    var getCurrentPage = function getCurrentPage(location, hash) {
+        var startIndex = location.lastIndexOf('/') + 1;
 
-        if ($icon.hasClass(expandIconClass)) {
-            $icon.removeClass(expandIconClass).addClass(collapseIconClass);
-        } else {
-            $icon.removeClass(collapseIconClass).addClass(expandIconClass);
+        if (hash) {
+            return '' + location.slice(startIndex) + hash;
+        } else if (location.slice(0, 1) === '/') {
+            return location.slice(startIndex);
         }
 
-        $openContentIcons.removeClass(collapseIconClass).addClass(expandIconClass);
-    };
-
-    // remove the hash mark from a url hash
-    var trimHash = function trimHash(hash) {
-        return hash.slice(0, 1);
+        return location;
     };
 
     var getCurrent = function getCurrent() {
         var location = window.location.pathname;
         var hash = window.location.hash;
-        var startIndex = location.lastIndexOf('/') + 1;
-        var currentPage = void 0;
-        var $target = void 0;
-        var $currentList = void 0;
-
-        if (hash) {
-            currentPage = location.slice(startIndex) + hash;
-        } else if (location.slice(0, 1) === '/') {
-            currentPage = location.slice(startIndex);
-        } else {
-            currentPage = location;
-        }
-
-        $target = $container.find('a[href="' + currentPage + '"]').addClass('active');
+        var currentPage = getCurrentPage(location, hash);
+        var $target = $container.find('a[href="' + currentPage + '"]').addClass('active');
 
         if ($target.length) {
             return $target.closest('ul').parent('li');
         } else if (hash) {
-            // if the hash is not in the menu remove it and return the url
-            currentPage = location.slice(startIndex);
-            $target = $container.find('a[href="' + currentPage + '"]').addClass('active');
-
-            return $target.closest('ul').parent('li');
+            // if the hash doesn't exist in the menu remove it
+            // and use the url instead
+            return $container.find('a[href="' + location.slice(location.lastIndexOf('/') + 1) + '"]').addClass('active').closest('ul').parent('li');
         } else {
             return false;
         }
     };
 
-    var showCurrent = function showCurrent($currentList) {
-        // if ($currentList) {
-        $currentList.find('ul').show();
-        $currentList.find('.' + iconClass).removeClass(expandIconClass).addClass(collapseIconClass);
-        // }
+    var showCurrent = function showCurrent() {
+        var $currentList = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
-        // return;
+        if ($currentList) {
+            $currentList.find('ul.active').removeClass('active');
+            $currentList.find('ul').addClass('active');
+        }
+
+        return;
     };
 
     if ($container.length) {
         (function () {
-            var $label = $container.children('ul').children('li').has('ul').children('a');
+            var $label = $container.find('.' + labelClass).parent('li').has('ul').children('a');
             var $content = $label.next('ul');
-            var $expandedContent = $container.find('.' + contentHolderClass + '[data-state=expanded]');
             var $currentList = getCurrent();
-            var $icons = $label.find('.' + iconClass);
 
-            if (!$currentList) {
-                showDefaultContent($expandedContent, $content);
-            } else {
-                $content.hide();
-                $icons.removeClass(collapseIconClass).addClass(expandIconClass);
+            if ($currentList) {
+                $content.removeClass('active');
+                $label.removeClass('active');
                 showCurrent($currentList);
             }
 
-            $(window).on('hashchange', function (e) {
-                e.preventDefault();
-
+            $(window).on('hashchange', function () {
                 $container.find('a.active').removeClass('active');
-                $currentList = getCurrent();
-                $content.hide();
-                $icons.removeClass(collapseIconClass).addClass(expandIconClass);
-                showCurrent($currentList);
+                $content.removeClass('active');
+                showCurrent(getCurrent());
             });
 
             $label.on('click', function (e) {
-                e.stopPropagation();
+                // e.stopPropagation();
                 e.preventDefault();
 
-                var $openContent = $($content).not(':hidden');
+                var $openContent = $content.filter('.active');
+                var $openLabel = $label.filter('.active');
 
-                toggle.call(this, speed, $openContent);
-                replaceIcons.call(this, $openContent, iconClass, expandIconClass, collapseIconClass);
+                self.toggle.call(this, $openContent, $openLabel);
             });
         })();
     }
