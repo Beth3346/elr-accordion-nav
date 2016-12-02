@@ -1,14 +1,11 @@
 {
   "name": "elr-accordion-nav",
-  "version": "2.0.0",
   "description": "a basic content accordion nav menu",
-  "main": "dist/elr-accordion-nav.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/elr-utilities/elr-accordion-nav.git"
-  },
-  "scripts": {
-    "build": "build"
+  "version": "2.0.0",
+  "author": "Elizabeth Rogers",
+  "bugs": {
+    "url": "https://github.com/Beth3346/elr-accordion-nav",
+    "email": "beth@elizabeth-rogers.com"
   },
   "dependencies": {
     "babel-runtime": "^6.0.0",
@@ -23,5 +20,18 @@
     "gulp-jshint": "^2.0.1",
     "gulp-sourcemaps": "^2.1.1",
     "jshint": "^2.9.3"
+  },
+  "homepage": "http://www.elizabeth-rogers.com/elr-utilities/js-accordion-nav.html",
+  "keywords": [
+    "javascript, jquery, accordion, ui, navigation"
+  ],
+  "license": "SEE LICENSE IN LICENSE.md",
+  "main": "dist/elr-accordion-nav.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/elr-utilities/elr-accordion-nav.git"
+  },
+  "scripts": {
+    "build": "build"
   }
 }
