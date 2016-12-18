@@ -4,8 +4,9 @@ const elrAccordionNav = function({
     containerClass = 'elr-accordion-nav',
     labelClass = 'elr-accordion-nav-label'
 } = {}) {
-    const contentHolderClass = contentHolderClass || 'elr-accordion-nav-inner';
+    const contentHolderClass = 'elr-accordion-nav-inner';
     const $container = $(`.${containerClass}`);
+
     const self = {
         toggle($openContent, $openLabel) {
             const $that = $(this);
