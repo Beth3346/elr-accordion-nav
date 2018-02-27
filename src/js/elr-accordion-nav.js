@@ -1,17 +1,63 @@
 import $ from 'jquery'
 
-// const showCurrent = function ($currentList = null) {
-//   if ($currentList) {
-//     $container.find('ul.active').removeClass('active')
-//     $currentList.parent('ul').addClass('active')
+const trimPath = pathname => {
+  if (pathname && pathname.length) {
+    if (pathname.lastIndexOf('/') === pathname.length - 1) {
+      return pathname.slice(0, -1)
+    }
+  }
 
-//     return $currentList
-//   }
+  return pathname
+}
 
-//   return
-// }
+const getStartIndex = pathname => {
+  if (pathname && pathname.length) {
+    return pathname.lastIndexOf('/')
+  }
+}
 
-const toggle = function ($openContent, $openLabel) {
+const getCurrentPage = pathname => {
+  const trimmedPath = trimPath(pathname)
+  const startIndex = getStartIndex(trimmedPath)
+
+  if (trimmedPath && trimmedPath.length) {
+    return trimmedPath.slice(startIndex)
+  }
+}
+
+const getTargetListItem = pathname => {
+  const currentPage = getCurrentPage(pathname)
+  const $target = $(`a[href$="${currentPage}"]`)
+
+  if ($target.length) {
+    return $target.addClass('active')
+  }
+
+  return false
+}
+
+const getCurrentList = (pathname, hash) => {
+  const $target = getTargetListItem(pathname)
+
+  if ($target.length) {
+    $target
+      .next('ul')
+      .addClass('active')
+      .parent('li')
+
+    if (hash) {
+      $(`a[href$="#${hash.slice(1)}"]`)
+        .parent('li')
+        .addClass('active')
+    }
+
+    return $target
+  }
+
+  return false
+}
+
+const toggle = function($openContent, $openLabel) {
   const $that = $(this)
   const $nextContent = $that.next('ul')
 
@@ -27,51 +73,6 @@ const toggle = function ($openContent, $openLabel) {
 let $container
 
 export default {
-  trimPath(pathname) {
-    if (pathname && pathname.length) {
-      if (pathname.lastIndexOf('/') === pathname.length - 1) {
-        return pathname.slice(0, -1)
-      }
-    }
-
-    return pathname
-  },
-  getStartIndex(pathname) {
-    if (pathname && pathname.length) {
-      return pathname.lastIndexOf('/')
-    }
-  },
-  getCurrentPage(pathname, hash) {
-    const trimmedPath = this.trimPath(pathname)
-    const startIndex = this.getStartIndex(trimmedPath)
-
-    if (hash) {
-      return `${trimmedPath.slice(startIndex)}${hash}`
-    }
-
-    if (trimmedPath && trimmedPath.length) {
-      return trimmedPath.slice(startIndex)
-    }
-  },
-  getTargetListItem(pathname) {
-    const currentPage = this.getCurrentPage(pathname)
-    const $target = $(`a[href$="${currentPage}"]`)
-
-    if ($target.length) {
-      return $target.addClass('active')
-    }
-
-    return false
-  },
-  getCurrentList(pathname, hash) {
-    const $target = this.getTargetListItem(pathname, hash)
-
-    if ($target.length) {
-      return $target.next('ul').addClass('active').parent('li')
-    }
-
-    return false
-  },
   init() {
     $container = $(`.elr-accordion-menu`)
 
@@ -85,8 +86,9 @@ export default {
       const $openContent = $content.filter('.active')
       const $openLabel = $label.filter('.active')
 
-      const $currentList = this.getCurrentList(
-        window.location.pathname
+      const $currentList = getCurrentList(
+        window.location.pathname,
+        window.location.hash
       )
 
       if ($currentList) {

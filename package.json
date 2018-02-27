@@ -23,6 +23,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "babel-preset-env": "^1.6.1",
     "babel-runtime": "^6.26.0",
     "jquery": "^3.3.1"
   },
