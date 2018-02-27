@@ -7,10 +7,9 @@
     "url": "https://github.com/Beth3346/elr-accordion-nav",
     "email": "Beth336@gmail.com"
   },
-  "homepage": "http://www.elizabeth-rogers.com/elr-utilities/js-accordion-nav.html",
-  "keywords": [
-    "javascript, jquery, accordion, ui, navigation"
-  ],
+  "homepage":
+    "http://www.elizabeth-rogers.com/elr-utilities/js-accordion-nav.html",
+  "keywords": ["javascript, jquery, accordion, ui, navigation"],
   "license": "MIT",
   "main": "src/index.js",
   "repository": {
@@ -19,6 +18,7 @@
   },
   "scripts": {
     "start": "webpack --config webpack.config.js",
+    "watch": "webpack --config webpack.config.js --watch",
     "test": "jest",
     "test:watch": "jest --watch"
   },

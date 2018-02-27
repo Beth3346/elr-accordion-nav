@@ -59,7 +59,7 @@ const getCurrentList = (pathname, hash) => {
 
 const toggle = function($openContent, $openLabel) {
   const $that = $(this)
-  const $nextContent = $that.next('ul')
+  const $nextContent = $that.next('.elr-accordion-menu-inner')
 
   if (!$nextContent.hasClass('active')) {
     $that.addClass('active')
@@ -80,9 +80,9 @@ export default {
       const $label = $container
         .find(`.elr-accordion-menu-label`)
         .parent('li')
-        .has('ul')
+        .has('.elr-accordion-menu-inner')
         .children('a')
-      const $content = $label.next('ul')
+      const $content = $label.next('.elr-accordion-menu-inner')
       const $openContent = $content.filter('.active')
       const $openLabel = $label.filter('.active')
 
@@ -96,15 +96,15 @@ export default {
         $openLabel.removeClass('active')
       }
 
-      // $(window).on('hashchange', function() {
-      //   $container.find('a.active').removeClass('active')
-
-      //   $content.removeClass('active')
-
-      //   showCurrent(
-      //     getCurrentList(window.location.pathname, window.location.hash)
-      //   )
-      // })
+      $(window).on('hashchange', function() {
+        $container
+          .find('.elr-accordion-menu-inner li.active')
+          .removeClass('active')
+        $('.elr-accordion-menu-inner.active')
+          .find(`a[href$="${window.location.hash}"]`)
+          .parent('li')
+          .addClass('active')
+      })
 
       $label.on('click', function(e) {
         e.preventDefault()

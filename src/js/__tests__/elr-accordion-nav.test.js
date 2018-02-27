@@ -93,5 +93,28 @@ describe('init', () => {
     expect($('.elr-accordion-menu-label.active').length).toBe(1)
     expect($('.elr-accordion-menu-inner.active').length).toBe(1)
   })
-  it('should update menu when hash changes', () => {})
+  it('should update menu when hash changes', () => {
+    const $menu = $('.elr-accordion-menu-inner').eq(1)
+    jsdom.reconfigure({
+      url: 'http://localhost:8000/pages/dogs#poodle'
+    })
+
+    $(window).trigger('hashchange')
+
+    expect(
+      $menu
+        .children()
+        .eq(1)
+        .hasClass('active')
+    ).toBeFalsy()
+
+    expect(
+      $menu
+        .children()
+        .eq(3)
+        .hasClass('active')
+    ).toBeTruthy()
+
+    expect($menu.children('.active').length).toBe(1)
+  })
 })
