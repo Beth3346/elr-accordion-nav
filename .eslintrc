@@ -1,0 +1,16 @@
+{
+    "extends": "eslint:recommended",
+    "rules":{
+        "camelcase": 1,
+        "comma-dangle": 2,
+        "quotes": 0,
+        no-console: "error"
+    },
+    "globals": {
+        "document": true,
+        "window": true,
+        "jQuery": true,
+        "$": true
+    },
+    "parser": "babel-eslint"
+}
